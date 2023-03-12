@@ -30,7 +30,7 @@ function createCard(data) {
     divCard.append(divImg, divCardInfo);
 
     const img = `
-    <img class='card-img' src='${data.picture.medium}' alt='profile picture'>
+    <img class='card-img' src='${data.picture.thumbnail}' alt='profile picture'>
     `;
     divImg.insertAdjacentHTML('beforeend', img);
 
@@ -92,4 +92,4 @@ fetch(url, {
     }
 })
     .then(res => res.json())
-    .then(data => console.log(createModal(data)))
+    .then(data => console.log(createCard(data)))
