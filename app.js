@@ -102,6 +102,5 @@ fetch(url, {
         const card = e.target.closest('.card');
         if (card && card.parentNode === divGallery) {
           console.log('Card clicked!');
-          createModal();
         }
       });
