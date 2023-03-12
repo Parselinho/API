@@ -30,7 +30,7 @@ function createCard(data) {
     divCard.append(divImg, divCardInfo);
 
     const img = `
-    <img class='card-img' src='${data.picture.thumbnail}' alt='profile picture'>
+    <img class='card-img' src='${data.picture.large}' alt='profile picture'>
     `;
     divImg.insertAdjacentHTML('beforeend', img);
 
@@ -69,14 +69,14 @@ function createModal(data) {
     `;
 
     const html = `
-    <img class='modal-img' src='https://placehold.it/125x125' alt='profile picture'>
-    <h3 id='name' class='modal-name cap'>name</h3>
-    <p class="modal-text">email</p>
-    <p class="modal-text cap">city</p>
+    <img class='modal-img' src='${data.picture.thumbnail}' alt='profile picture'>
+    <h3 id='name' class='modal-name cap'>${data.name}</h3>
+    <p class="modal-text">${data.email}</p>
+    <p class="modal-text cap">${data.location.city}</p>
     <hr>
-    <p class="modal-text">(555) 555-5555</p>
-    <p class="modal-text">123 Portland Ave., Portland, OR 97204</p>
-    <p class="modal-text">Birthday: 10/21/2015</p>
+    <p class="modal-text">${data.cell}</p>
+    <p class="modal-text">${data.street.number} ${data.street.name}., ${data.state}, ${data.postcode}</p>
+    <p class="modal-text">Birthday: ${data.dob.date}</p>
     `;
 
     divButton.insertAdjacentHTML('beforeend', html);
@@ -92,4 +92,16 @@ fetch(url, {
     }
 })
     .then(res => res.json())
-    .then(data => console.log(createCard(data)))
+    .then(data => {
+        const cards = data.results.map(createCard)
+        console.log(data)
+    })
+    .then(data => console.log(createModal));
+
+    divGallery.addEventListener('click', (e) => {
+        const card = e.target.closest('.card');
+        if (card && card.parentNode === divGallery) {
+          console.log('Card clicked!');
+          createModal();
+        }
+      });
