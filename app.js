@@ -70,13 +70,13 @@ function createModal(data) {
 
     const html = `
     <img class='modal-img' src='${data.picture.thumbnail}' alt='profile picture'>
-    <h3 id='name' class='modal-name cap'>${data.name}</h3>
+    <h3 id='name' class='modal-name cap'>${data.name.first} ${data.name.last}</h3>
     <p class="modal-text">${data.email}</p>
     <p class="modal-text cap">${data.location.city}</p>
     <hr>
     <p class="modal-text">${data.cell}</p>
     <p class="modal-text">${data.street.number} ${data.street.name}., ${data.state}, ${data.postcode}</p>
-    <p class="modal-text">Birthday: ${data.dob.date}</p>
+    <p class="modal-text">Birthday: ${new Date(data.dob.date).toLocaleDateString()}</p>
     `;
 
     divButton.insertAdjacentHTML('beforeend', html);
@@ -94,13 +94,12 @@ fetch(url, {
     .then(res => res.json())
     .then(data => {
         const cards = data.results.map(createCard)
-        console.log(data)
     })
-    .then(data => console.log(createModal));
-
-    divGallery.addEventListener('click', (e) => {
-        const card = e.target.closest('.card');
-        if (card && card.parentNode === divGallery) {
-          console.log('Card clicked!');
-        }
-      });
+    .then(data => {
+            divGallery.addEventListener('click', (e) => {
+            const card = e.target.closest('.card');
+            if (card && card.parentNode === divGallery) {
+                createModal(data);
+            }
+        });
+        })
