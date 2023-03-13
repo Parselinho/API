@@ -94,13 +94,21 @@ fetch(url, {
     .then(res => res.json())
     .then(data => {
         const cards = data.results.map(createCard)
-        console.log(data);
+        return data
     })
     .then(data => {
-            divGallery.addEventListener('click', (e) => {
-            const card = e.target.closest('.card');
-            if (card && card.parentNode === divGallery) {
-                createModal(data);
-            }
-        });
-        })
+        const modalCards = data.results.map(result => result);
+        for(let i=0; i < modalCards.length; i++) {
+            const currentCard = modalCards[i];
+            divGallery.addEventListener('click', () => {
+                createModal(currentCard);
+            })
+        }
+    });
+
+        // function shit(e){
+        //         const card = e.target.closest('.card');
+        //         if (card && card.parentNode === divGallery) {
+        //             createModal(data);
+        //         }
+        //     }
