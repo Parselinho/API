@@ -21,6 +21,20 @@ function createFormInput() {
     <input type='submit' value='&#x1F50D;' id='search-submit' class='search-submit' </input>
     `;
     form.insertAdjacentHTML('beforeend', input);
+    const searchInput = document.querySelector('#search-input');
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const searchVal = searchInput.value.toLowerCase();
+        for (let i=0; i<cards.length; i++) {
+            const cardName = `${globalData[i].name.first.toLowerCase()} ${globalData[i].name.last.toLowerCase()}`
+            if (cardName.includes(searchVal)) {
+                cards[i].style.display = 'block'
+            } else {
+                cards[i].style.display = 'none'
+            }
+        }
+    })
 }
 // call the function to create the elements
 createFormInput();
