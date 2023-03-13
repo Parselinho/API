@@ -96,11 +96,11 @@ fetch(url, {
         const cards = data.results.map(createCard)
         console.log(data);
     })
-    .then(() => {
+    .then(data => {
             divGallery.addEventListener('click', (e) => {
             const card = e.target.closest('.card');
             if (card && card.parentNode === divGallery) {
-                createModal(card);
+                createModal(data);
             }
         });
         })
