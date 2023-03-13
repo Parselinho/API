@@ -75,7 +75,7 @@ function createModal(data) {
     <p class="modal-text cap">${data.location.city}</p>
     <hr>
     <p class="modal-text">${data.cell}</p>
-    <p class="modal-text">${data.street.number} ${data.street.name}., ${data.state}, ${data.postcode}</p>
+    <p class="modal-text">${data.location.street.number} ${data.location.street.name}., ${data.location.state}, ${data.location.postcode}</p>
     <p class="modal-text">Birthday: ${new Date(data.dob.date).toLocaleDateString()}</p>
     `;
 
@@ -97,6 +97,7 @@ fetch(url, {
         return data
     })
     .then(data => {
+        console.log(data);
         const modalCards = data.results.map(result => result);
         for(let i=0; i < modalCards.length; i++) {
             divGallery.addEventListener('click', (e) => {
