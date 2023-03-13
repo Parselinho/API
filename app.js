@@ -23,19 +23,31 @@ function createFormInput() {
     form.insertAdjacentHTML('beforeend', input);
     const searchInput = document.querySelector('#search-input');
 
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
+    function handleSearch() {
+        // Get the value of the search input and convert it to lowercase
         const searchVal = searchInput.value.toLowerCase();
         for (let i=0; i<cards.length; i++) {
+            // Get the name of the user associated with this card and convert it to lowercase
             const cardName = `${globalData[i].name.first.toLowerCase()} ${globalData[i].name.last.toLowerCase()}`
+            // If the search value is found in the user's name, display the card
             if (cardName.includes(searchVal)) {
                 cards[i].style.display = 'block'
             } else {
                 cards[i].style.display = 'none'
             }
         }
+    }
+    // when submit a form the filter is triggered, I can remove it but need it for the project. the next step (input event) its just to make the app more comfort.
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        handleSearch();
     })
+    // when type inside the input - fitler trigered automaticly
+    searchInput.addEventListener('input', () => {
+        handleSearch();
+    });
 }
+
 // call the function to create the elements
 createFormInput();
 
