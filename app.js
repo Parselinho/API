@@ -99,11 +99,10 @@ fetch(url, {
     .then(data => {
         const modalCards = data.results.map(result => result);
         for(let i=0; i < modalCards.length; i++) {
-            const currentCard = modalCards[i];
             divGallery.addEventListener('click', (e) => {
                 const card = e.target.closest('.card');
                 if (card && card.parentNode === divGallery)
-                createModal(currentCard);
+                createModal(modalCards[i]);
             })
         }
     });
