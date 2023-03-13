@@ -4,6 +4,8 @@ const divGallery = document.querySelector('#gallery');
 const body = document.querySelector('body');
 const url = 'https://randomuser.me/api/?results=12&nat=us' // will take 12 random users everytime the page reload
 let globalData = [];
+let cards = [];
+
 
 /* Functions Declaration: */
 
@@ -46,6 +48,7 @@ function createCard(data) {
     <p class='card-text cap'>${data.location.city}, ${data.location.country}</p>
     `;
     divCardInfo.insertAdjacentHTML('beforeend', html);
+    cards.push(divCard);
 }
 
 //function that will create the modal and will take the argument data so it can accest the data I got from the api
@@ -118,6 +121,12 @@ function createModal(data) {
             body.removeChild(divContainer);
         }
     })
+
+    // buttonsExceedChildren.forEach(button => {
+    //     button.addEventListener('click', (e) => {
+    //         console.log(e.target);
+    //     })
+    // })
 }
 
 function eventModal(e) {
