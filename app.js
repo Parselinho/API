@@ -1,7 +1,9 @@
 const divSearch = document.querySelector('.search-container');
 const divGallery = document.querySelector('#gallery');
 const body = document.querySelector('body');
+const url = 'https://randomuser.me/api/?results=12' // will take 12 random users everytime the page reload
 
+/* creating  the form and the input*/
 function createFormInput() {
     const form = document.createElement('form');
     form.action = '#';
@@ -14,10 +16,10 @@ function createFormInput() {
     `;
     form.insertAdjacentHTML('beforeend', input);
 }
-
+// call the function to create the elements
 createFormInput();
 
-
+// create function that will create the elements and the textContent inside the elements , will take the argument data so it can accest the data I got from the api
 function createCard(data) {
     const divCard = document.createElement('div');
     divCard.classList.add('card');
@@ -30,7 +32,7 @@ function createCard(data) {
     divCard.append(divImg, divCardInfo);
 
     const img = `
-    <img class='card-img' src='${data.picture.large}' alt='profile picture'>
+    <img class='card-img' src='${data.picture.large}' alt='profile picture'> 
     `;
     divImg.insertAdjacentHTML('beforeend', img);
 
@@ -42,6 +44,7 @@ function createCard(data) {
     divCardInfo.insertAdjacentHTML('beforeend', html);
 }
 
+//function that will create the modal and will take the argument data so it can accest the data I got from the api
 function createModal(data) {
     const divContainer = document.createElement('div');
     divContainer.classList.add('modal-container');
@@ -68,15 +71,26 @@ function createModal(data) {
     <button type="button" id="modal-next" class="modal-next btn">Next</button>
     `;
 
+    // formating the phone number like the instructions : (xxx) XXX-XXXX
+    const formattedCell = data.cell.replace(/^\D*(\d{3})\D*(\d{3})\D*-(\d{4})\D*$/, '($1) $2-$3');
+
+
+    // formating the birthday like the instructions. xx/xx/xxxx
+    const formattedBirthday = new Date(data.dob.date).toLocaleDateString("en-US", {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+    });
+
     const html = `
     <img class='modal-img' src='${data.picture.large}' alt='profile picture'>
     <h3 id='name' class='modal-name cap'>${data.name.first} ${data.name.last}</h3>
     <p class="modal-text">${data.email}</p>
     <p class="modal-text cap">${data.location.city}</p>
     <hr>
-    <p class="modal-text">${data.cell}</p>
+    <p class="modal-text">${formattedCell}</p>
     <p class="modal-text">${data.location.street.number} ${data.location.street.name}., ${data.location.state}, ${data.location.postcode}</p>
-    <p class="modal-text">Birthday: ${new Date(data.dob.date).toLocaleDateString()}</p>
+    <p class="modal-text">Birthday: ${formattedBirthday}</p>
     `;
 
     divButton.insertAdjacentHTML('beforeend', html);
@@ -84,8 +98,9 @@ function createModal(data) {
 }
 
 
-// the fetch api : https://randomuser.me/api/?results=12
-const url = 'https://randomuser.me/api/?results=12'
+let globalData = [];
+
+//  send a single request to the API
 fetch(url, {
     headers: {
         'Accept': 'application/json'
@@ -93,17 +108,18 @@ fetch(url, {
 })
     .then(res => res.json())
     .then(data => {
-        const cards = data.results.map(createCard)
-        return data
+        const cards = data.results.map(createCard) 
+        globalData = data.results;
     })
-    .then(data => {
-        console.log(data);
-        const modalCards = data.results.map(result => result);
+    .then(() => {
+        console.log(globalData);
+        const modalCards = globalData.map(result => result);
             divGallery.addEventListener('click', (e) => {
                 const card = e.target.closest('.card');
-                if (card && card.parentNode === divGallery)
+                if (card && card.parentNode === divGallery) { // will only call the event listener if a card i clicked, and ignore space clicking.
                 for(let i=0; i < modalCards.length; i++) {
-                createModal(modalCards[i]);
+                createModal(modalCards[i]); // will pop up the modal window when clicking a card.
+                }
                 }
             })
     });
