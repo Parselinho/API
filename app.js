@@ -2,7 +2,7 @@
 const divSearch = document.querySelector('.search-container');
 const divGallery = document.querySelector('#gallery');
 const body = document.querySelector('body');
-const url = 'https://randomuser.me/api/?results=12' // will take 12 random users everytime the page reload
+const url = 'https://randomuser.me/api/?results=12&nat=us' // will take 12 random users everytime the page reload
 let globalData = [];
 
 /* Functions Declaration: */
@@ -100,12 +100,10 @@ function createModal(data) {
 
     divButton.insertAdjacentHTML('beforeend', html);
     divExceed.insertAdjacentHTML('beforeend', buttonsExceed);
-
+    
     //pressing the X - will close the modal
     const strong = document.querySelector('strong');
-    strong.addEventListener('click', () => {
-        body.removeChild(divContainer);
-    })
+
 
     //creating three variables that are arrays of elements.
     const divModalChildren = Array.from(divModal.children);
@@ -115,12 +113,11 @@ function createModal(data) {
     // closing the modal if I press outside the modal
     divContainer.addEventListener('click', (e) => {
         // check if the clicked element is not a child of those elements and then remove the modal, the last 3 elements are converted from array to seperate elements
-        if(![divExceed , ...divModalChildren, ...divButtonChildren, ...buttonsExceedChildren].includes(e.target)) {
+        // after the OR || operator - pressing the X - will close the modal
+        if(![divExceed , ...divModalChildren, ...divButtonChildren, ...buttonsExceedChildren].includes(e.target) || e.target === strong) {
             body.removeChild(divContainer);
         }
     })
-    
-    
 }
 
 function eventModal(e) {
@@ -156,5 +153,4 @@ fetch(url, {
         // Add an event listener to the gallery container for opening modals
         eventModal();
     })
-
 
