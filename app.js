@@ -69,7 +69,7 @@ function createModal(data) {
     `;
 
     const html = `
-    <img class='modal-img' src='${data.picture.thumbnail}' alt='profile picture'>
+    <img class='modal-img' src='${data.picture.large}' alt='profile picture'>
     <h3 id='name' class='modal-name cap'>${data.name.first} ${data.name.last}</h3>
     <p class="modal-text">${data.email}</p>
     <p class="modal-text cap">${data.location.city}</p>
@@ -99,13 +99,13 @@ fetch(url, {
     .then(data => {
         console.log(data);
         const modalCards = data.results.map(result => result);
-        for(let i=0; i < modalCards.length; i++) {
             divGallery.addEventListener('click', (e) => {
                 const card = e.target.closest('.card');
                 if (card && card.parentNode === divGallery)
+                for(let i=0; i < modalCards.length; i++) {
                 createModal(modalCards[i]);
+                }
             })
-        }
     });
 
 
