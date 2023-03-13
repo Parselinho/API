@@ -111,18 +111,16 @@ fetch(url, {
     .then(data => {
         const cards = data.results.map(createCard) 
         globalData = data.results;
+        eventModal();
     })
-    .then(() => {
-        console.log(globalData);
+
+    function eventModal(e) {
         const modalCards = globalData.map(result => result);
-            divGallery.addEventListener('click', (e) => {
-                const card = e.target.closest('.card');
-                if (card && card.parentNode === divGallery) { // will only call the event listener if a card i clicked, and ignore space clicking.
-                for(let i=0; i < modalCards.length; i++) {
-                createModal(modalCards[i]); // will pop up the modal window when clicking a card.
-                }
-                }
-            })
-    });
-
-
+        divGallery.addEventListener('click', (e) => {
+            const card = e.target.closest('.card');
+            if (card && card.parentNode === divGallery) {
+                const index = Array.from(divGallery.children).indexOf(card);
+                createModal(modalCards[index]);
+            }
+        });
+    }
