@@ -72,7 +72,8 @@ function createModal(data) {
     `;
 
     // formating the phone number like the instructions : (xxx) XXX-XXXX
-    const formattedCell = data.cell.replace(/^\D*(\d{3})\D*(\d{3})\D*-(\d{4})\D*$/, '($1) $2-$3');
+    let formattedCell = data.cell.replace(/[^\d]/g, ''); // remove all non-numeric characters
+    formattedCell = formattedCell.replace(/(\d{3})(\d{3})(\d{3}|d{4}|d{5})/, '($1) $2-$3');
 
 
     // formating the birthday like the instructions. xx/xx/xxxx
