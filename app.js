@@ -100,15 +100,12 @@ fetch(url, {
         const modalCards = data.results.map(result => result);
         for(let i=0; i < modalCards.length; i++) {
             const currentCard = modalCards[i];
-            divGallery.addEventListener('click', () => {
+            divGallery.addEventListener('click', (e) => {
+                const card = e.target.closest('.card');
+                if (card && card.parentNode === divGallery)
                 createModal(currentCard);
             })
         }
     });
 
-        // function shit(e){
-        //         const card = e.target.closest('.card');
-        //         if (card && card.parentNode === divGallery) {
-        //             createModal(data);
-        //         }
-        //     }
+
