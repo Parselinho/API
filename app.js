@@ -148,6 +148,8 @@ function createModal(data) {
         }
     })
 
+ 
+
     // buttonsExceedChildren.forEach(button => {
     //     button.addEventListener('click', (e) => {
     //         console.log(e.target);
