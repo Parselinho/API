@@ -1,6 +1,11 @@
 /* ===================================== 
    Public API Request
 ======================================== */
+@font-face {
+    font-family: 'Marmelad', sans-serif;
+    src: url('https://fonts.google.com/specimen/Marmelad?category=Sans+Serif');
+}
+
 
 @import url('https://fonts.googleapis.com/css?family=Nunito');
 
@@ -14,9 +19,10 @@ html, body {
 }
 
 body {
-    font-family: "Nunito", sans-serif;
+    font-family: 'Marmelad', sans-serif;
     text-align: center;
     background: rgba(235, 235, 235, 0.9);
+    background-color: azure;
 }
 
 header {
@@ -90,6 +96,7 @@ header h1 {
     border: 1px solid rgba(50, 50, 50, 0.3);
     transition: .4s ease-out;
     overflow: hidden;
+    box-shadow: 10px 10px;
 }
 
 .card-img {
@@ -129,6 +136,7 @@ header h1 {
     bottom: 0;
     left: 0;
     background: rgba(0, 0, 0, 0.7);
+    background-color: bisque;
 }
 
 .modal {
