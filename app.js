@@ -33,15 +33,21 @@ function createFormInput() {
         // If the search value is found in the user's name, display the card
         if (cardName.includes(searchVal)) {
         cards[i].style.display = 'block'
+        cards[i].style.display = 'flex'
         } else {
         cards[i].style.display = 'none'
         }
         }
     }
+    
+
+
+
     // when submit a form the filter is triggered, I can remove it but need it for the project. the next step (input event) its just to make the app more comfort.
     form.addEventListener('submit', (e) => {
         e.preventDefault();
         handleSearch();
+        
     })
     // when type inside the input - fitler trigered automaticly
     searchInput.addEventListener('input', () => {
