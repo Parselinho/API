@@ -28,14 +28,14 @@ function createFormInput() {
         // Get the value of the search input and convert it to lowercase
         const searchVal = searchInput.value.toLowerCase();
         for (let i=0; i<cards.length; i++) {
-            // Get the name of the user associated with this card and convert it to lowercase
-            const cardName = `${globalData[i].name.first.toLowerCase()} ${globalData[i].name.last.toLowerCase()}`
-            // If the search value is found in the user's name, display the card
-            if (cardName.includes(searchVal)) {
-                cards[i].style.display = 'block'
-            } else {
-                cards[i].style.display = 'none'
-            }
+        // Get the name of the user associated with this card and convert it to lowercase
+        const cardName = `${globalData[i].name.first.toLowerCase()} ${globalData[i].name.last.toLowerCase()}`
+        // If the search value is found in the user's name, display the card
+        if (cardName.includes(searchVal)) {
+        cards[i].style.display = 'block'
+        } else {
+        cards[i].style.display = 'none'
+        }
         }
     }
     // when submit a form the filter is triggered, I can remove it but need it for the project. the next step (input event) its just to make the app more comfort.
@@ -112,9 +112,9 @@ function createModal(data) {
 
     // formating the birthday like the instructions. xx/xx/xxxx
     const formattedBirthday = new Date(data.dob.date).toLocaleDateString("en-US", {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit'
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
     });
 
     const html = `
@@ -130,86 +130,83 @@ function createModal(data) {
 
     divButton.insertAdjacentHTML('beforeend', html);
     divExceed.insertAdjacentHTML('beforeend', buttonsExceed);
-    
+
     //pressing the X - will close the modal
     const strong = document.querySelector('strong');
-
-
-    //creating three variables that are arrays of elements.
+    //creating three variables that are arrays of elements. to target the 'INSIDE THE MODAL' elements, so I can close if I press outside the modal (next step)
     const divModalChildren = Array.from(divModal.children);
     const divButtonChildren = Array.from(divButton.children);
     const buttonsExceedChildren = Array.from(divExceed.children);
 
     // closing the modal if I press outside the modal
     divContainer.addEventListener('click', (e) => {
-            // check if the clicked element is not a child of those elements and then remove the modal, the last 3 elements are converted from array to seperate elements
-            // after the OR || operator - pressing the X - will close the modal
-          if(![divExceed , ...divModalChildren, ...divButtonChildren, ...buttonsExceedChildren].includes(e.target) || e.target === strong) {
-            const divContainers = document.querySelectorAll('.modal-container');
-            // this for closing all modals if we toggle between them its opening more modals so we can close it all when we want and not one by one.
-            divContainers.forEach(div => { 
-            body.removeChild(div);
-          });
+        // check if the clicked element is not a child of those elements and then remove the modal, the last 3 elements are converted from array to seperate elements
+        // after the OR || operator - pressing the X - will close the modal
+        if(![divExceed , ...divModalChildren, ...divButtonChildren, ...buttonsExceedChildren].includes(e.target) || e.target === strong) {
+            body.removeChild(divContainer)
         }
     })
 
-
-
     buttonsExceedChildren.forEach(button => {
         button.addEventListener('click', (e) => {
-          // If the "Next" button is clicked, increment the index
-          if(e.target.textContent === 'Next') {
+        // If the "Next" button is clicked, increment the index
+        if(e.target.textContent === 'Next') {
             index += 1;
-            // If the index goes out of bounds, wrap around to the beginning
+        // If the index goes out of bounds, wrap around to the beginning
             if (index > 11) {
-              index = 0;
+                index = 0;
             }
-            createModal(modalCards[index]);
-          } 
-          // If the "Prev" button is clicked, decrement the index
-          else if (e.target.textContent === 'Prev') { 
+        } 
+        // If the "Prev" button is clicked, decrement the index
+        else if (e.target.textContent === 'Prev') { 
             index -= 1;
             if (index < 0) {
-              index = 11;
+                index = 11;
             }
-            createModal(modalCards[index]);
-          }
-        })
-      })
+        }
+        // Remove any existing modals before creating a new one
+        const existingModals = document.querySelectorAll('.modal-container');
+        existingModals.forEach(modal => {
+            body.removeChild(modal);
+        });
+        // Create a new modal with the updated data
+        createModal(modalCards[index]);
+        });
+    });
 
 }
 
 function eventModal(e) {
     // Get an array of all the modal cards
-     modalCards = globalData.map(result => result);
+    modalCards = globalData.map(result => result);
     // Add a click event listener to the gallery container
     divGallery.addEventListener('click', (e) => {
         // Find the closest ancestor of the clicked element with the class "card"
         const card = e.target.closest('.card');
         // If the closest ancestor is a "card" and its parent is the gallery container
-        if (card && card.parentNode === divGallery) {
+            if (card && card.parentNode === divGallery) {
             // Get the index of the card in the gallery
             index = Array.from(divGallery.children).indexOf(card); // source : https://developer.mozilla.org/en-US/docs/web/javascript/reference/global_objects/array/from
             // Create a modal
             createModal(modalCards[index]);
-        }
+            }
     });
 }
-    /* fetch API Declartation : */
+/* fetch API Declartation : */
 
 //  send a single request to the API
 fetch(url, {
     headers: {
-        'Accept': 'application/json'
+    'Accept': 'application/json'
     }
 })
-    .then(res => res.json())
-    // When the JSON data is received, create cards for each result and add an event listener to the gallery container
-    .then(data => {
-        // Map the "results" array to an array of card elements using the "createCard" function
-        const cards = data.results.map(createCard) 
-        globalData = data.results;
-        // Add an event listener to the gallery container for opening modals
-        eventModal();
-    })
+.then(res => res.json())
+// When the JSON data is received, create cards for each result and add an event listener to the gallery container
+.then(data => {
+    // Map the "results" array to an array of card elements using the "createCard" function
+    const cards = data.results.map(createCard) 
+    globalData = data.results;
+    // Add an event listener to the gallery container for opening modals
+    eventModal();
+})
 
