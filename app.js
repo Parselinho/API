@@ -142,11 +142,12 @@ function createModal(data) {
 
     // closing the modal if I press outside the modal
     divContainer.addEventListener('click', (e) => {
-        // check if the clicked element is not a child of those elements and then remove the modal, the last 3 elements are converted from array to seperate elements
-        // after the OR || operator - pressing the X - will close the modal
+            // check if the clicked element is not a child of those elements and then remove the modal, the last 3 elements are converted from array to seperate elements
+            // after the OR || operator - pressing the X - will close the modal
           if(![divExceed , ...divModalChildren, ...divButtonChildren, ...buttonsExceedChildren].includes(e.target) || e.target === strong) {
             const divContainers = document.querySelectorAll('.modal-container');
-            divContainers.forEach(div => {
+            // this for closing all modals if we toggle between them its opening more modals so we can close it all when we want and not one by one.
+            divContainers.forEach(div => { 
             body.removeChild(div);
           });
         }
@@ -156,13 +157,17 @@ function createModal(data) {
 
     buttonsExceedChildren.forEach(button => {
         button.addEventListener('click', (e) => {
+          // If the "Next" button is clicked, increment the index
           if(e.target.textContent === 'Next') {
             index += 1;
+            // If the index goes out of bounds, wrap around to the beginning
             if (index > 11) {
               index = 0;
             }
             createModal(modalCards[index]);
-          } else if (e.target.textContent === 'Prev') { 
+          } 
+          // If the "Prev" button is clicked, decrement the index
+          else if (e.target.textContent === 'Prev') { 
             index -= 1;
             if (index < 0) {
               index = 11;
