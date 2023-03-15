@@ -5,7 +5,8 @@ const body = document.querySelector('body');
 const url = 'https://randomuser.me/api/?results=12&nat=us' // will take 12 random users everytime the page reload
 let globalData = [];
 let cards = [];
-
+let index;
+let modalCards;
 
 /* Functions Declaration: */
 
@@ -143,23 +144,39 @@ function createModal(data) {
     divContainer.addEventListener('click', (e) => {
         // check if the clicked element is not a child of those elements and then remove the modal, the last 3 elements are converted from array to seperate elements
         // after the OR || operator - pressing the X - will close the modal
-        if(![divExceed , ...divModalChildren, ...divButtonChildren, ...buttonsExceedChildren].includes(e.target) || e.target === strong) {
-            body.removeChild(divContainer);
+          if(![divExceed , ...divModalChildren, ...divButtonChildren, ...buttonsExceedChildren].includes(e.target) || e.target === strong) {
+            const divContainers = document.querySelectorAll('.modal-container');
+            divContainers.forEach(div => {
+            body.removeChild(div);
+          });
         }
     })
 
- 
 
-    // buttonsExceedChildren.forEach(button => {
-    //     button.addEventListener('click', (e) => {
-    //         console.log(e.target);
-    //     })
-    // })
+
+    buttonsExceedChildren.forEach(button => {
+        button.addEventListener('click', (e) => {
+          if(e.target.textContent === 'Next') {
+            index += 1;
+            if (index > 11) {
+              index = 0;
+            }
+            createModal(modalCards[index]);
+          } else if (e.target.textContent === 'Prev') { 
+            index -= 1;
+            if (index < 0) {
+              index = 11;
+            }
+            createModal(modalCards[index]);
+          }
+        })
+      })
+
 }
 
 function eventModal(e) {
     // Get an array of all the modal cards
-    const modalCards = globalData.map(result => result);
+     modalCards = globalData.map(result => result);
     // Add a click event listener to the gallery container
     divGallery.addEventListener('click', (e) => {
         // Find the closest ancestor of the clicked element with the class "card"
@@ -167,7 +184,7 @@ function eventModal(e) {
         // If the closest ancestor is a "card" and its parent is the gallery container
         if (card && card.parentNode === divGallery) {
             // Get the index of the card in the gallery
-            const index = Array.from(divGallery.children).indexOf(card); // source : https://developer.mozilla.org/en-US/docs/web/javascript/reference/global_objects/array/from
+            index = Array.from(divGallery.children).indexOf(card); // source : https://developer.mozilla.org/en-US/docs/web/javascript/reference/global_objects/array/from
             // Create a modal
             createModal(modalCards[index]);
         }
